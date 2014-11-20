@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Test Node - Websocket - Guillaume pour Agence Verywell</title>
+		<style>
+			html
+			{
+			height: 100%;
+			}
+
+			body
+			{
+			margin: 0;
+			padding: 0;
+			height: 100%;
+			}
+
+			/*Zone photos*/
+
+
+			#zone-photos
+			{
+			width: 1000px;
+			height: 500px;
+			margin: 0 auto;
+			position: relative;
+			}
+
+			#zone-photos ul
+			{
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			height: 100%;
+			}
+
+			#zone-photos ul li
+			{
+			width: 50%;
+			float: left;
+			height: 50%;
+			}
+
+			#zone-photos ul li#tofsteve
+			{
+			background: #cccccc;
+			position:absolute;
+			top:0;
+			left:0;
+			}
+
+			#zone-photos ul li#tofsteve.active
+			{
+			z-index: 10;
+			}
+
+			#zone-photos ul li#tofpaul.active
+			{
+			z-index: 10;
+			}
+
+			#zone-photos ul li#toffanny.active
+			{
+			z-index: 10;
+			}
+
+			#zone-photos ul li#tofalex.active
+			{
+			z-index: 10;
+			}
+
+			#zone-photos ul li#tofpaul
+			{
+			background: #14cccc;
+			position:absolute;
+			right:0;
+			top:0;
+			}
+
+			#zone-photos ul li#toffanny
+			{
+			background: #c126cc;
+			position:absolute;
+			bottom:0;
+			left:0;
+			}
+
+			#zone-photos ul li#tofalex
+			{
+			background: #ccc222;
+			position:absolute;
+			right:0;
+			bottom:0;
+			}
+
+			/*Zone liens*/
+
+			#zone-liens
+			{
+			width: 100%;
+			height: 100%;
+			}
+
+			#zone-liens ul
+			{
+			margin: 0;
+			padding: 0;
+			height: 100%;
+			list-style: none;
+			}
+
+			#zone-liens ul li
+			{
+			float: left;
+			width: 50%;
+			height: 50%;
+			}
+
+			#zone-liens ul li a
+			{
+			display: block;
+			width: 100%;
+			height: 100%;
+			text-align: center;
+			font-size: 30px;
+			text-decoration: none;
+			}
+
+			#zone-liens ul li a#steve
+			{
+			background: #cccccc;
+			}
+
+			#zone-liens ul li a#paul
+			{
+			background: #14cccc;
+			}
+
+			#zone-liens ul li a#fanny
+			{
+			background: #c126cc;
+			}
+
+			#zone-liens ul li a#alex
+			{
+			background: #ccc222;
+			}
+
+
+			/*Gestion de l'affichage selon le device*/
+
+			@media (min-width: 900px)
+			{
+				#zone-liens
+				{
+				display: none;
+				}
+			}
+
+			@media (max-width: 900px)
+			{
+				#zone-photos
+				{
+				display: none;
+				}
+			}
+		</style>
+    </head>
+ 
+    <body>
+	
+		<div id="zone-liens">
+			<ul>
+				<li><a href="#" id="steve">Steve</a></li>
+				<li><a href="#" id="paul">Paul</a></li>
+				<li><a href="#" id="fanny">Fanny</a></li>
+				<li><a href="#" id="alex">Alexandre</a></li>
+			</ul>
+		</div>
+		
+		<div id="zone-photos">
+			<ul>
+				<li id="tofsteve">Steve</li>
+				<li id="tofpaul">Paul</li>
+				<li id="toffanny">Fanny</li>
+				<li id="tofalex">Alexandre</li>
+			</ul>
+		</div>
+
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+		<script>
+			var socket = io.connect();
+
+            // Lorsqu'on clique sur le bouton, on envoie le nom de la personne au serveur
+            $('#steve').click(function () {
+                socket.emit('steve');
+            });
+			
+			$('#paul').click(function () {
+                socket.emit('paul');
+            });
+			
+			$('#fanny').click(function () {
+                socket.emit('fanny');
+            });
+			
+			$('#alex').click(function () {
+                socket.emit('alex');
+            });
+			
+			// Quand le serveur envoi un nomclass on affiche la fiche
+            socket.on('steveclass', function() {
+				$( "#tofsteve" ).addClass( "active" );
+				$( "#tofpaul" ).removeClass( "active" );
+				$( "#toffanny" ).removeClass( "active" );
+				$( "#tofalex" ).removeClass( "active" );
+				$('#tofsteve').animate({height:'100%',width:'100%'}, 500);
+            });
+			
+			socket.on('paulclass', function() {
+				$( "#tofpaul" ).addClass( "active" );
+				$( "#tofsteve" ).removeClass( "active" );
+				$( "#toffanny" ).removeClass( "active" );
+				$( "#tofalex" ).removeClass( "active" );
+				$('#tofpaul').animate({height:'100%',width:'100%'}, 500);
+            });
+			
+			socket.on('fannyclass', function() {
+				$( "#toffanny" ).addClass( "active" );
+				$( "#tofpaul" ).removeClass( "active" );
+				$( "#tofsteve" ).removeClass( "active" );
+				$( "#tofalex" ).removeClass( "active" );
+				$('#toffanny').animate({height:'100%',width:'100%'}, 500);
+            });
+			
+			socket.on('alexclass', function() {
+				$( "#tofalex" ).addClass( "active" );
+				$( "#tofpaul" ).removeClass( "active" );
+				$( "#toffanny" ).removeClass( "active" );
+				$( "#tofsteve" ).removeClass( "active" );
+				$('#tofalex').animate({height:'100%',width:'100%'}, 500);
+            });
+		</script>
+    </body>
+</html>
